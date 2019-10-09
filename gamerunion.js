@@ -28,14 +28,18 @@ client.on('ready', () => {
 	client.user.setActivity('peeps be gamers', {
 		type: 'WATCHING'
 	});
-	client.user.setStatus('online').then(console.log).catch(console.error);
+	client.user.setStatus('online').then().catch(console.error);
 	addons.forEach((addon) => {
 		if (addon.ready) addon.ready(client);
 	});
 });
 
 client.on('message', (msg) => {
-	if (msg.author.id === '250809865767878657' || msg.author.id === '432308392682586113') {
+	if (
+		msg.author.id === '250809865767878657' ||
+		msg.author.id === '432308392682586113' ||
+		msg.author.id === '148223809080524800'
+	) {
 		if (msg.content.substr(0, prefix.length) === prefix) {
 			const command = msg.content.split(' ')[0].slice(prefix.length);
 

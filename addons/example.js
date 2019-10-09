@@ -11,13 +11,17 @@ exports.ready = function(client) {
 };
 
 exports.message = function(client, msg) {
-	console.log('MESSAGE SENT: ' + msg.content);
+	try {
+		console.log(msg.member.displayName + ': ' + msg.content);
+	} catch (err) {
+		console.log('\nError in writing to log. No clue why ⊙▽⊙\nErr: ' + err + '\n');
+	}
 	// ... this runs when the bot detects a message sent
 
 	// simple ping pong
-	if (msg.content === '!ping') {
-		msg.channel.send('Pong!');
-	}
+	// if (msg.content === '!ping') {
+	// 	msg.channel.send('Pong!');
+	// }
 };
 
 exports.messageEdit = function(client, oldmsg, newmsg) {
