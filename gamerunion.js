@@ -61,16 +61,19 @@ client.on('message', (msg) => {
 	if (msg.author.bot == true) {
 		return;
 	}
-
-	addons.forEach((addon) => {
-		if (addon.message) {
-			if (botOn) {
-				addon.message(client, msg);
-			} else if (addon.bypass) {
-				addon.message(client, msg);
+	try {
+		addons.forEach((addon) => {
+			if (addon.message) {
+				if (botOn) {
+					addon.message(client, msg);
+				} else if (addon.bypass) {
+					addon.message(client, msg);
+				}
 			}
-		}
-	});
+		});
+	} catch (error) {
+		console.log('Error in addon execution: ' + error);
+	}
 });
 
 client.on('messageUpdate', (oldmsg, newmsg) => {
