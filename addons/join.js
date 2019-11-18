@@ -82,7 +82,7 @@ exports.init = function(client) {
 			} else if (messageReaction.emoji.id === failureEmoji) {
 				const message = await fetchMsg(messageId);
 				try {
-					if (!member.roles.find((val) => val.name === 'Quarantine')) {
+					if (member.roles.find((val) => val.name === 'Quarantine')) {
 						member.kick('Sorry, but you have been deemed irrelevant. ._.');
 
 						console.log(`Kicking ${member.displayName}.`);

@@ -45,7 +45,7 @@ exports.message = function(client, msg) {
 						console.log(this);
 					});
 			} else if (command === 'clear') {
-				const num = parseInt(msg.content.slice(prefix.length + command.length + 1));
+				let num = parseInt(msg.content.slice(prefix.length + command.length + 1));
 				if (num === NaN) return;
 				num++;
 				msg.channel
@@ -55,7 +55,7 @@ exports.message = function(client, msg) {
 						const messages = fetched;
 
 						msg.channel.bulkDelete(messages, true).then(() => {
-							msg.channel.send(num + ' messages cleared!').then((messageToDelete) => {
+							msg.channel.send(num - 1 + ' messages cleared!').then((messageToDelete) => {
 								setTimeout(() => {
 									messageToDelete.delete();
 								}, 3000);

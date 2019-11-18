@@ -25,7 +25,7 @@ addons.forEach((addon) => {
 
 client.on('ready', () => {
 	console.log('Logged in as ' + client.user.tag + '!');
-	client.user.setActivity('peeps be gamers', {
+	client.user.setActivity("peeps be gamein'", {
 		type: 'WATCHING'
 	});
 	client.user.setStatus('online').then().catch(console.error);
