@@ -44,6 +44,35 @@ exports.message = function(client, msg) {
 						if (!this.isRejected) msg.channel.send('My username has been changed.');
 						console.log(this);
 					});
+			} else if (command === 'clear') {
+				const num = parseInt(msg.content.slice(prefix.length + command.length + 1));
+				if (num === NaN) return;
+				num++;
+				msg.channel
+					.fetchMessages({ limit: num })
+					.then((fetched) => {
+						console.log('Attempting to clear channel of ' + num + ' messages...');
+						const messages = fetched;
+
+						msg.channel.bulkDelete(messages, true).then(() => {
+							msg.channel.send(num + ' messages cleared!').then((messageToDelete) => {
+								setTimeout(() => {
+									messageToDelete.delete();
+								}, 3000);
+							});
+						});
+					})
+					.catch(console.error);
+			} else if (command === 'clearevent') {
+				msg.channel
+					.fetchMessages({ limit: 100 })
+					.then((fetched) => {
+						console.log('Attempting to clear channel...');
+						const messages = fetched.filter((fetchedMsg) => fetchedMsg.author.id !== '148223809080524800');
+
+						msg.channel.bulkDelete(messages, true);
+					})
+					.catch(console.error);
 			}
 		}
 	}

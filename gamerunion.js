@@ -46,7 +46,7 @@ client.on('message', (msg) => {
 			if (command === 'botstop') {
 				botOn = false;
 				msg.channel.send('Bot stopped until further notice!');
-				client.user.setStatus('offline').then(console.log).catch(console.error);
+				client.user.setStatus('invisible').then(console.log).catch(console.error);
 				console.log('\n------------\nBOT ON LOCKDOWN.\n------------\n');
 			} else if (command === 'botstart') {
 				botOn = true;

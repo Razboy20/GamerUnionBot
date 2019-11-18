@@ -1,5 +1,9 @@
 var exports = module.exports;
 
+exports.priority = true;
+
+exports.bypass = true;
+
 exports.init = function(client) {
 	console.log('BOT INIT');
 	// ... you can do stuff here on the init of the client. (this is before the bot logs in)

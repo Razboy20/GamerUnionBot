@@ -1,6 +1,6 @@
 {
 	"name": "gamer-union-bot",
-	"version": "1.0.2",
+	"version": "1.0.6",
 	"description": "A bot made for the Gamer Union discord. ",
 	"main": "gamerunion.js",
 	"scripts": {
@@ -10,10 +10,7 @@
 		"type": "git",
 		"url": "git+https://github.com/Razboy20/GamerUnionBot.git"
 	},
-	"keywords": [
-		"gamerunion",
-		"gamers"
-	],
+	"keywords": [ "gamerunion", "gamers" ],
 	"author": "Razboy20",
 	"license": "ISC",
 	"bugs": {
@@ -29,5 +26,8 @@
 		"path": "^0.12.7",
 		"simple-youtube-api": "^5.2.1",
 		"ytdl-core": "^0.29.7"
+	},
+	"nodemonConfig": {
+		"ignore": [ "data/*" ]
 	}
 }

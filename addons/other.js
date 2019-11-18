@@ -13,8 +13,9 @@ exports.message = function(client, msg) {
 			'yes?',
 			'why ye pinging me; im just a lonely bot ;-;',
 			'you need some help? well idk anything so bai',
-			'i am akhil in disguise 😎',
-			'no u'
+			'i am aneesh in disguise 😎',
+			'no u',
+			'LEAVE ME ALONE 😭'
 		];
 
 		// wittyComebacks = [
