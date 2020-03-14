@@ -4,8 +4,8 @@ exports.priority = true;
 
 exports.bypass = true;
 
-const successEmoji = '645637572823089152';
-const failureEmoji = '645637591391010836';
+const successEmoji = '688237903695839243';
+const failureEmoji = '688237902999846952';
 
 var fs = require('fs');
 
@@ -16,19 +16,19 @@ const writeFile = promisify(fs.writeFile);
 
 exports.init = function(client) {
 	function fetchMsg(id) {
-		return client.guilds
-			.get('585983098928365572')
-			.channels.find((val) => val.name === 'to-be-verified')
-			.fetchMessage(id);
+		return client.guilds.cache
+			.get('629488591361409034')
+			.channels.cache.find((val) => val.name === 'to-be-verified')
+			.messages.fetch(id);
 	}
 
 	console.log('Initializing Addon "Join"... ');
 
 	client.on('guildMemberAdd', (member) => {
-		member.addRole(member.guild.roles.find((val) => val.name === 'Quarantine'));
-		client.guilds
-			.get('585983098928365572')
-			.channels.find((val) => val.name === 'to-be-verified')
+		member.roles.add(member.guild.roles.cache.find((val) => val.name === 'Quarantine'));
+		client.guilds.cache
+			.get('629488591361409034')
+			.channels.cache.find((val) => val.name === 'to-be-verified')
 			.send(`**${member}** has joined the gaming gamers... Verify?`)
 			.then(async (msg) => {
 				const rawData = await readFile('data/quarantine.json');
@@ -39,8 +39,8 @@ exports.init = function(client) {
 
 				writeFile('data/quarantine.json', JSON.stringify(data, null, 2));
 				console.log(data);
-				await msg.react(client.emojis.get(successEmoji));
-				await msg.react(client.emojis.get(failureEmoji));
+				await msg.react(client.emojis.cache.get(successEmoji));
+				await msg.react(client.emojis.cache.get(failureEmoji));
 			});
 	});
 
@@ -56,33 +56,33 @@ exports.init = function(client) {
 
 		if (data.hasOwnProperty(messageId)) {
 			const memberId = data[messageId];
-			const member = await messageReaction.message.guild.members.get(memberId);
+			const member = await messageReaction.message.guild.members.cache.get(memberId);
 			// const member = await client.fetchUser(memberId);
 
 			console.log('Reaction added on Verification Message! -- ' + messageReaction.emoji.name);
 			if (messageReaction.emoji.id === successEmoji) {
 				const message = await fetchMsg(messageId);
 				try {
-					member.removeRole(member.guild.roles.find((val) => val.name === 'Quarantine'));
+					member.roles.remove(member.guild.roles.cache.find((val) => val.name === 'Quarantine'));
 
 					console.log(`${member.displayName} has been verified.`);
 					message.edit(`**${member}** has been verified.`);
 				} catch (err) {
 					console.log('ERORR: cannot remove Role. \n\n' + err);
 					message.edit(
-						`Too late, **${client.fetchUser(memberId)}** is already verified (or gone in the wind).`
+						`Too late, **${client.members.fetch(memberId)}** is already verified (or gone in the wind).`
 					);
 				}
 
 				delete data[messageId];
 				data['list'] = data['list'].filter((val) => val !== messageId);
 
-				message.reactions.get(client.emojis.get(successEmoji).identifier).remove();
-				message.reactions.get(client.emojis.get(failureEmoji).identifier).remove();
+				message.reactions.cache.get(successEmoji).remove();
+				message.reactions.cache.get(failureEmoji).remove();
 			} else if (messageReaction.emoji.id === failureEmoji) {
 				const message = await fetchMsg(messageId);
 				try {
-					if (member.roles.find((val) => val.name === 'Quarantine')) {
+					if (member.roles.cache.find((val) => val.name === 'Quarantine')) {
 						member.kick('Sorry, but you have been deemed irrelevant. ._.');
 
 						console.log(`Kicking ${member.displayName}.`);
@@ -93,7 +93,7 @@ exports.init = function(client) {
 				} catch (err) {
 					console.log('ERORR: cannot kick user. \n\n' + err);
 					message.edit(
-						`Too late, **${client.fetchUser(
+						`Too late, **${client.members.fetch(
 							memberId
 						)}** is already gone (or there is an error somewhere 😉).`
 					);
@@ -102,8 +102,8 @@ exports.init = function(client) {
 				delete data[messageId];
 				data['list'] = data['list'].filter((val) => val !== messageId);
 
-				message.reactions.get(client.emojis.get(successEmoji).identifier).remove();
-				message.reactions.get(client.emojis.get(failureEmoji).identifier).remove();
+				message.reactions.cache.get(successEmoji).remove();
+				message.reactions.cache.get(failureEmoji).remove();
 			}
 
 			writeFile('data/quarantine.json', JSON.stringify(data, null, 2));
@@ -115,10 +115,10 @@ exports.init = function(client) {
 
 exports.ready = async function(client) {
 	function fetchMsg(id) {
-		return client.guilds
-			.get('585983098928365572')
-			.channels.find((val) => val.name === 'to-be-verified')
-			.fetchMessage(id);
+		return client.guilds.cache
+			.get('629488591361409034')
+			.channels.cache.find((val) => val.name === 'to-be-verified')
+			.messages.fetch(id);
 	}
 
 	const rawData = await readFile('data/quarantine.json');

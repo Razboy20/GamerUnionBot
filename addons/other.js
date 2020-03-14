@@ -7,7 +7,7 @@ exports.init = function(client) {
 };
 
 exports.message = function(client, msg) {
-	if (msg.isMentioned('628419860971520001')) {
+	if (msg.mentions.has('628419860971520001')) {
 		wittyComebacks = [
 			'sksksksksk',
 			'yes?',

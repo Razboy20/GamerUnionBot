@@ -26,7 +26,7 @@ SOFTWARE.
 Adapted by Razboy20 for the Gamer Union Bot.
 */
 
-const PREFIX = process.env.PREFIX;
+/* const PREFIX = process.env.PREFIX;
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
 var exports = module.exports;
@@ -238,3 +238,4 @@ ${serverQueue.songs.map((song) => `**-** ${song.title}`).join('\n')}
 	}
 	console.log('Initialized addon "Music Bot".');
 };
+*/

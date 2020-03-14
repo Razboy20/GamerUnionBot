@@ -1,4 +1,4 @@
-// Made by @GrumptyDumpty (aka [Redacted])
+// Made by @GrumptyDumpty (aka The Almighty One)
 
 // Modified by @Razboy20
 
@@ -24,7 +24,7 @@ String.prototype.replaceMentions = function(msg) {
 
 	if (mentions)
 		mentions.forEach((id) => {
-			const user = msg.guild.members.get(id);
+			const user = msg.guild.members.cache.get(id);
 			if (user.displayName) toReturn = toReturn.replace(new RegExp('<@!?' + id + '>', 'g'), user.displayName);
 		});
 

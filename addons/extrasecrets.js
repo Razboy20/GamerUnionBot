@@ -20,7 +20,7 @@ exports.message = function(client, msg) {
 			msg.author.id === '148223809080524800'
 		) {
 			if (command === 'nick') {
-				msg.guild.members
+				msg.guild.members.cache
 					.get(client.user.id)
 					.setNickname(msg.content.slice(prefix.length + command.length + 1))
 					.catch(function(err) {
@@ -47,32 +47,43 @@ exports.message = function(client, msg) {
 			} else if (command === 'clear') {
 				let num = parseInt(msg.content.slice(prefix.length + command.length + 1));
 				if (num === NaN) return;
-				num++;
-				msg.channel
-					.fetchMessages({ limit: num })
-					.then((fetched) => {
-						console.log('Attempting to clear channel of ' + num + ' messages...');
-						const messages = fetched;
 
-						msg.channel.bulkDelete(messages, true).then(() => {
-							msg.channel.send(num - 1 + ' messages cleared!').then((messageToDelete) => {
-								setTimeout(() => {
-									messageToDelete.delete();
-								}, 3000);
+				if (msg.mentions.members.first()) {
+					if (msg.author.id === msg.mentions.members.first().id) num++;
+					msg.channel.messages
+						.fetch()
+						.then((fetched) => {
+							console.log('Attempting to clear channel of ' + num + ' messages...');
+
+							const messages = fetched
+								.filter((m) => m.author.id === msg.mentions.members.first().id)
+								.first(num);
+
+							msg.channel.bulkDelete(messages, true).then(() => {
+								if (msg.author.id === msg.mentions.members.first().id) num--;
+								msg.channel
+									.send(num + ' messages cleared!')
+									.then((messageToDelete) => messageToDelete.delete({ timeout: 3000 }));
 							});
-						});
-					})
-					.catch(console.error);
-			} else if (command === 'clearevent') {
-				msg.channel
-					.fetchMessages({ limit: 100 })
-					.then((fetched) => {
-						console.log('Attempting to clear channel...');
-						const messages = fetched.filter((fetchedMsg) => fetchedMsg.author.id !== '148223809080524800');
+							if (msg.author.id !== msg.mentions.members.first().id) msg.delete();
+						})
+						.catch(console.error);
+				} else {
+					num++;
+					msg.channel.messages
+						.fetch({ limit: num })
+						.then((fetched) => {
+							console.log('Attempting to clear channel of ' + num + ' messages...');
+							const messages = fetched;
 
-						msg.channel.bulkDelete(messages, true);
-					})
-					.catch(console.error);
+							msg.channel.bulkDelete(messages, true).then(() => {
+								msg.channel
+									.send(num - 1 + ' messages cleared!')
+									.then((messageToDelete) => messageToDelete.delete({ timeout: 3000 }));
+							});
+						})
+						.catch(console.error);
+				}
 			}
 		}
 	}
